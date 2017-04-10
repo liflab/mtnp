@@ -447,13 +447,19 @@ public class HardTable extends Table
 	{
 		for (TableEntry tab_e : m_entries)
 		{
+			boolean same = true;
 			for (Entry<String,PrimitiveValue> kv : e.entrySet())
 			{
 				String key = kv.getKey();
-				if (tab_e.containsKey(key) && tab_e.get(key).equals(e.get(key)))
+				if (!tab_e.containsKey(key) || !(tab_e.get(key).equals(e.get(key))))
 				{
-					return tab_e;
+					same = false;
+					break;
 				}
+			}
+			if (same)
+			{
+				return tab_e;
 			}
 		}
 		return null;

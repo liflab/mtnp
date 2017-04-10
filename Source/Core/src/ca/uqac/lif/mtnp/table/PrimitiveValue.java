@@ -117,7 +117,7 @@ public class PrimitiveValue implements Comparable<PrimitiveValue>
 			// Numbers are compared as numbers
 			return (int) Math.floor(m_number.doubleValue() - o.m_number.doubleValue());
 		}
-		if (m_number == null && o.m_number == null)
+		if (m_number == null && o.m_number == null && m_string == null && o.m_string == null)
 		{
 			// Two nulls are equal
 			return 0;
@@ -132,7 +132,8 @@ public class PrimitiveValue implements Comparable<PrimitiveValue>
 			// Numbers go before strings
 			return 1;
 		}
-		return 0;
+		// Compare as strings
+		return m_string.compareTo(o.m_string);
 	}
 	
 	@Override
