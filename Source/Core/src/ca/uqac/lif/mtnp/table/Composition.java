@@ -42,10 +42,10 @@ public class Composition implements TableTransformation
 	@Override
 	public TempTable transform(TempTable ... tables)
 	{
-		TempTable t = tables[0];
-		for (TableTransformation trans : m_transformations)
+		TempTable t = m_transformations[0].transform(tables);
+		for (int i = 1; i < m_transformations.length; i++)
 		{
-			t = trans.transform(t);
+			t = m_transformations[i].transform(t);
 		}
 		return t;
 	}
