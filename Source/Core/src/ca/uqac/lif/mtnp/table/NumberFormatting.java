@@ -18,6 +18,8 @@
 package ca.uqac.lif.mtnp.table;
 
 import java.text.DecimalFormat;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Transformation that applies a formatting from a {@link DecimalFormat}
@@ -28,9 +30,14 @@ import java.text.DecimalFormat;
 public class NumberFormatting extends SingleCellTransformation 
 {
 	/**
-	 * The formatter used to format the numbers
+	 * Association between keys and formatters
 	 */
-	protected final DecimalFormat m_formatter;
+	protected final Map<String,DecimalFormat> m_formatters;
+	
+	/**
+	 * The default formatter for unspecified numerical fields
+	 */
+	protected DecimalFormat m_defaultFormatter;
 	
 	/**
 	 * Creates a transformation with the specified formatting rules
@@ -40,7 +47,8 @@ public class NumberFormatting extends SingleCellTransformation
 	public NumberFormatting(DecimalFormat formatter)
 	{
 		super();
-		m_formatter = formatter;
+		m_formatters = new HashMap<String,DecimalFormat>();
+		m_defaultFormatter = formatter;
 	}
 	
 	/**
@@ -60,6 +68,29 @@ public class NumberFormatting extends SingleCellTransformation
 	{
 		this(new DecimalFormat());
 	}
+	
+	/**
+	 * Sets the formatting rules for a specific column in the table
+	 * @param key The name of the column
+	 * @param format The formatter instance
+	 * @return This transformation
+	 */
+	public NumberFormatting setFormat(String key, DecimalFormat formatter)
+	{
+		m_formatters.put(key, formatter);
+		return this;
+	}
+	
+	/**
+	 * Sets the formatting rules for a specific column in the table
+	 * @param key The name of the column
+	 * @param format The format string
+	 * @return This transformation
+	 */
+	public NumberFormatting setFormat(String key, String format)
+	{
+		return setFormat(key, new DecimalFormat(format));
+	}
 
 	@Override
 	public PrimitiveValue applyTransformation(String key, PrimitiveValue value) 
@@ -68,6 +99,10 @@ public class NumberFormatting extends SingleCellTransformation
 		{
 			return value;
 		}
-		return PrimitiveValue.getInstance(m_formatter.format(value.numberValue()));
+		if (m_formatters.containsKey(key))
+		{
+			return PrimitiveValue.getInstance(m_formatters.get(key).format(value.numberValue()));
+		}
+		return PrimitiveValue.getInstance(m_defaultFormatter.format(value.numberValue()));
 	}
 }
