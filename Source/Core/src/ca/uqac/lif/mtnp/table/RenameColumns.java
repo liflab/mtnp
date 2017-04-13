@@ -44,15 +44,16 @@ public class RenameColumns implements TableTransformation
 	{
 		TempTable table = tables[0];
 		String[] ordering = table.getColumnNames();
-		String[] new_ordering = new String[ordering.length];
-		for (int i = 0; i < ordering.length; i++)
+		TempTable tt = new TempTable(-4, m_names);
+		for (TableEntry te : table.getEntries())
 		{
-			int pos = table.getColumnPosition(ordering[i]);
-			String col_name = table.getColumnName(pos);
-			new_ordering[i] = col_name;
+			TableEntry new_te = new TableEntry();
+			for (int i = 0; i < ordering.length; i++)
+			{
+				new_te.put(m_names[i], te.get(ordering[i]));
+			}
+			tt.add(new_te);
 		}
-		TempTable tt = new TempTable(-4, new_ordering);
-		tt.addAll(table.getDataTable(true, new_ordering).getEntries());
 		return tt;
 
 	}
