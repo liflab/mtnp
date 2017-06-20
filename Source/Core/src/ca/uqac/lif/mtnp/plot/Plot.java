@@ -194,8 +194,8 @@ public abstract class Plot
 	
 	/**
 	 * Creates a new plot
-	 * @param title
-	 * @param a
+	 * @param t The table from which the plot will fetch its data
+	 * @param title A title given to the plot
 	 */
 	protected Plot(Table t, String title)
 	{
@@ -328,7 +328,7 @@ public abstract class Plot
 	
 	/**
 	 * Gets a reference to the data table from which this plot is drawn.
-	 * @return The table, or {@node null} if no table reference can be given
+	 * @return The table, or {@code null} if no table reference can be given
 	 */
 	public Table getTable()
 	{

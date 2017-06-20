@@ -88,8 +88,8 @@ public class TableCellNode implements NodeFunction
 	
 	/**
 	 * Gets the owner of a datapoint
-	 * @param lab
-	 * @param datapoint_id
+	 * @param tracker The manager responsible for ownership relationships
+	 * @param datapoint_id The ID of the datapoint to fetch
 	 * @return The owner, or {@code null} if this object could not
 	 * find the owner
 	 */

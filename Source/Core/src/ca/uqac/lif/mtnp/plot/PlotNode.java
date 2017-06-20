@@ -67,8 +67,8 @@ public class PlotNode implements NodeFunction
 
 	/**
 	 * Gets the owner of a datapoint
-	 * @param lab
-	 * @param datapoint_id
+	 * @param manager The manager responsible of ownership relationships
+	 * @param datapoint_id The ID of the data point to fetch
 	 * @return The owner, or {@code null} if this object could not
 	 * find the owner
 	 */

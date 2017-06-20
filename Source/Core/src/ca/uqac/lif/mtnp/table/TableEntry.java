@@ -138,8 +138,9 @@ public class TableEntry extends HashMap<String,PrimitiveValue>
 	
 	/**
 	 * Gets the datapoint IDs associated to a key
-	 * @param key
-	 * @return
+	 * @param key The datapoint ID
+	 * @return The node function associated to this key, or
+	 *   {@code null} if no dependency was found
 	 */
 	public NodeFunction getDependency(String key)
 	{

@@ -72,7 +72,7 @@ public class NumberFormatting extends SingleCellTransformation
 	/**
 	 * Sets the formatting rules for a specific column in the table
 	 * @param key The name of the column
-	 * @param format The formatter instance
+	 * @param formatter The formatter instance
 	 * @return This transformation
 	 */
 	public NumberFormatting setFormat(String key, DecimalFormat formatter)

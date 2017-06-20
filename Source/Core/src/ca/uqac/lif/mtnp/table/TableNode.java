@@ -159,8 +159,8 @@ public class TableNode
 	
 	/**
 	 * Gets the owner of a datapoint
-	 * @param lab
-	 * @param datapoint_id
+	 * @param manager The manager responsible for ownership relationships
+	 * @param datapoint_id The ID of the datapoint to fetch
 	 * @return The owner, or {@code null} if this object could not
 	 * find the owner
 	 */
