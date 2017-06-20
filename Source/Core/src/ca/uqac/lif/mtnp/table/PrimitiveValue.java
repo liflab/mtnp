@@ -103,6 +103,20 @@ public class PrimitiveValue implements Comparable<PrimitiveValue>
 	{
 		return m_string;
 	}
+	
+	/**
+	 * Gets the value of this cell. 
+	 * @return If the value is numeric, returns a {@code double};
+	 *   otherwise, returns a string
+	 */
+	public Comparable<?> value()
+	{
+		if (isNumeric())
+		{
+			return m_number.doubleValue();
+		}
+		return m_string;
+	}
 
 	@Override
 	public int compareTo(PrimitiveValue o)

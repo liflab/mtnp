@@ -93,7 +93,7 @@ public class GralDataTable extends Table implements DataSource
 	@Override
 	public Comparable<?> get(int arg0, int arg1)
 	{
-		return m_table.get(arg0, arg1);
+		return m_table.get(arg0, arg1).value();
 	}
 
 	@Override
