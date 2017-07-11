@@ -24,7 +24,6 @@ import ca.uqac.lif.mtnp.DataFormatter;
 import ca.uqac.lif.mtnp.plot.Plot;
 import ca.uqac.lif.mtnp.table.Table;
 import ca.uqac.lif.mtnp.table.TableTransformation;
-import ca.uqac.lif.mtnp.util.FileHelper;
 
 /**
  * Top-level class for plots drawn using the GnuPlot software.
@@ -46,11 +45,11 @@ public abstract class GnuPlot extends Plot
 	 * The path to launch GnuPlot
 	 */
 	protected static transient String s_path = "gnuplot";
-
+	
 	/**
-	 * Whether gnuplot is present on the system
+	 * The version string obtained when checking if Gnuplot is present
 	 */
-	protected static transient final boolean s_gnuplotPresent = FileHelper.commandExists(s_path);
+	protected static transient String s_gnuplotVersionString = checkGnuplot();
 	
 	/**
 	 * The fill style used to draw the graph
@@ -151,7 +150,7 @@ public abstract class GnuPlot extends Plot
 	 */
 	public static boolean isGnuplotPresent()
 	{
-		return s_gnuplotPresent;
+		return s_gnuplotVersionString.endsWith("exit code 0");
 	}
 	
 	/**
@@ -227,6 +226,27 @@ public abstract class GnuPlot extends Plot
 			return "";
 		}
 		return "fillcolor rgb \"" + m_palette.getHexColor(color_nb) + "\"";
+	}
+	
+	/**
+	 * Gets the version string obtained when checking if Gnuplot is present 
+	 * @return The version string
+	 */
+	public static String getGnuplotVersionString()
+	{
+		return s_gnuplotVersionString;
+	}
+	
+	/**
+	 * Checks if Gnuplot is present on the system
+	 * @return A string with the version and exit code obtained when 
+	 *   attempting to run Gnuplot
+	 */
+	protected static String checkGnuplot()
+	{
+		CommandRunner runner = new CommandRunner(new String[]{"gnuplot", "--version"});
+		runner.run();
+		return runner.getString().trim() + ", exit code " + runner.getErrorCode();
 	}
 
 }

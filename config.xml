@@ -26,14 +26,14 @@
   <name>MTNP</name>
   
   <!-- The project's version number -->
-  <version>0.1.2-alpha</version>
+  <version>0.1.3-alpha</version>
   
   <!-- The project's author. Currently this only
   shows up in the footer of the Javadoc documentation. -->
   <author>Sylvain Hall&#233;</author>
   
   <!-- The project's main class -->
-  <mainclass>ca.uqac.lif.mtnp.table.Table</mainclass>
+  <mainclass>ca.uqac.lif.mtnp.FrontEnd</mainclass>
   
   <!-- Installation folders -->
   <srcdir>Source/Core/src</srcdir>
