@@ -35,8 +35,8 @@ public class FrontEnd
 	protected static String getCliHeader()
 	{
 		String out = "";
-		out += "MTNP " + formatVersion() + " - Manipulate Plots N'Tables\n";
-		out += "(C) 2017 Laboratoire d'informatique formelle\nUniversité du Québec à Chicoutimi, Canada\n";
+		out += "MTNP " + formatVersion() + " - Manipulate Tables N'Plots\n";
+		out += "(C) 2017 Laboratoire d'informatique formelle\nUniversitÃ© du QuÃ©bec Ã  Chicoutimi, Canada\n";
 		return out;
 	}
 
