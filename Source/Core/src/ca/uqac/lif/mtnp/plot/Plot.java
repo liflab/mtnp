@@ -169,13 +169,7 @@ public abstract class Plot
 	public Plot(Table table, String title, TableTransformation transformation)
 	{
 		super();
-		m_table = table;
-		m_title = table.getTitle();
-		if (m_title.matches("Table \\d+"))
-		{
-			// Replace "Table n" by "Plot n" as the default name
-			m_title = m_title.replace("Table", "Plot");
-		}
+		setTable(table);
 		s_counterLock.lock();
 		m_id = s_idCounter++;
 		s_counterLock.unlock();
@@ -201,6 +195,23 @@ public abstract class Plot
 	{
 		this(t);
 		m_title = title;
+	}
+	
+	/**
+	 * Sets the table to be displayed by this plot
+	 * @param t The table
+	 * @return This plot
+	 */
+	public Plot setTable(Table t)
+	{
+		m_table = t;
+		m_title = t.getTitle();
+		if (m_title.matches("Table \\d+"))
+		{
+			// Replace "Table n" by "Plot n" as the default name
+			m_title = m_title.replace("Table", "Plot");
+		}
+		return this;
 	}
 	
 	/**
