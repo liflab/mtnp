@@ -65,6 +65,14 @@ public class Scatterplot extends GnuPlot implements ca.uqac.lif.mtnp.plot.Scatte
 	protected boolean m_withPoints = true;
 	
 	/**
+	 * Creates an empty scatterplot
+	 */
+	public Scatterplot()
+	{
+		super();
+	}
+	
+	/**
 	 * Creates a scatterplot
 	 * @param table
 	 */

@@ -35,6 +35,14 @@ import de.erichseifert.gral.io.plots.DrawableWriterFactory;
 public class GralPlot extends Plot
 {	
 	/**
+	 * Creates an empty GRAL plot
+	 */
+	public GralPlot()
+	{
+		super();
+	}
+	
+	/**
 	 * Creates a new plot from a table
 	 * @param t The table
 	 */

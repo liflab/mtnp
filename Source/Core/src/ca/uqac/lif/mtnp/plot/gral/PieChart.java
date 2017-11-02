@@ -25,6 +25,11 @@ import de.erichseifert.gral.plots.PiePlot;
 
 public class PieChart extends GralPlot implements ca.uqac.lif.mtnp.plot.PieChart
 {
+	public PieChart()
+	{
+		super();
+	}
+	
 	public PieChart(Table t)
 	{
 		super(t);

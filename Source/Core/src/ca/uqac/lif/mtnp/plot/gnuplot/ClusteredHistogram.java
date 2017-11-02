@@ -83,6 +83,14 @@ public class ClusteredHistogram extends GnuPlot implements TwoDimensionalPlot
 	protected float m_boxWidth = 0.75f;
 	
 	/**
+	 * Creates a new bar plot
+	 */
+	public ClusteredHistogram()
+	{
+		super();
+	}
+	
+	/**
 	 * Creates a new bar plot from a table
 	 * @param t The table
 	 */

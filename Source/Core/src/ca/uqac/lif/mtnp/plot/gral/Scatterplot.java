@@ -70,6 +70,14 @@ public class Scatterplot extends GralPlot implements ca.uqac.lif.mtnp.plot.Scatt
 	 * Whether to draw each data series with marks for each data point
 	 */
 	protected boolean m_withPoints = true;
+	
+	/**
+	 * Creates an empty scatterplot with default settings
+	 */
+	public Scatterplot()
+	{
+		super();
+	}
 
 	/**
 	 * Creates a new scatterplot with default settings

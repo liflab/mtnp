@@ -52,6 +52,11 @@ public class BoxPlot extends GralPlot implements TwoDimensionalPlot
 		super(t);
 	}
 	
+	public BoxPlot()
+	{
+		super();
+	}
+	
 	@Override
 	public TwoDimensionalPlot setCaption(Axis axis, String caption)
 	{

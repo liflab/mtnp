@@ -67,6 +67,14 @@ public abstract class GnuPlot extends Plot
 	 */
 	protected static transient long s_waitInterval = 100;
 	
+	/**
+	 * Creates an empty GnuPlot
+	 */
+	public GnuPlot()
+	{
+		super();
+	}
+	
 	public GnuPlot(Table table)
 	{
 		super(table);

@@ -44,6 +44,11 @@ public class GnuBoxPlot extends GnuPlot implements BoxPlot
 	 */
 	protected String[] m_seriesNames;
 	
+	public GnuBoxPlot()
+	{
+		this(null);
+	}
+	
 	public GnuBoxPlot(Table table) 
 	{
 		super(table);

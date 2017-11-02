@@ -37,7 +37,7 @@ public abstract class Plot
 	 * The image type used for displaying the plot
 	 */
 	public static enum ImageType {PNG, DUMB, PDF, CACA};
-	
+
 	/**
 	 * An 8-color preset palette for qualitative data:
 	 * <span style="color:#E41A1C">&#x25A0;</span>
@@ -92,7 +92,7 @@ public abstract class Plot
 	 * 16 EGA colors.
 	 */
 	public static final transient Palette EGA;
-	
+
 	static {
 		// Setup of discrete palettes
 		// Found from https://github.com/aschn/gnuplot-colorbrewer
@@ -101,12 +101,12 @@ public abstract class Plot
 		QUALITATIVE_3 = new DiscretePalette("#8DD3C7", "#FFFFB3", "#BEBADA", "#FB8072", "#80B1D3", "#FDB462", "#B3DE69", "#FCCDE5");
 		EGA = new DiscretePalette("#5555FF", "#55FF55", "#55FFFF", "#FF5555", "#FF55FF", "#FFFF55", "#0000AA", "#00AA00", "#00AAAA", "#AA0000", "#AA00AA", "#AA5500", "#AAAAAA", "#555555", "#FFFFFF", "#000000");
 	}
-	
+
 	/**
 	 * The table this plot is based on
 	 */
 	protected Table m_table;
-	
+
 	/**
 	 * The plot's title
 	 */
@@ -121,39 +121,39 @@ public abstract class Plot
 	 * A counter for auto-incrementing plot IDs
 	 */
 	private static int s_idCounter = 1;
-	
+
 	/**
 	 * A lock for accessing the counter
 	 */
 	private static Lock s_counterLock = new ReentrantLock();
-	
+
 	/**
 	 * The palette used to draw the data series for this plot
 	 */
 	protected Palette m_palette;
-	
+
 	/**
 	 * A table transformation to apply before plotting
 	 */
 	protected TableTransformation m_transformation = null;
-	
+
 	/**
 	 * Whether the plot shows a key
 	 */
 	protected transient boolean m_hasKey = true;
-	
+
 	/**
 	 * A table nickname. This can be used as a short "code" that refers
 	 * to the table (rather than using its ID).
 	 */
 	protected String m_nickname = "";
-	
+
 	/**
 	 * The bytes of a blank PNG image, used as a placeholder when no plot can
 	 * be drawn
 	 */
 	public static final transient byte[] s_blankImagePng = FileHelper.internalFileToBytes(Plot.class, "blank.png");
-	
+
 	/**
 	 * The bytes of a blank PDF image, used as a placeholder when no plot can
 	 * be drawn
@@ -187,6 +187,14 @@ public abstract class Plot
 	}
 	
 	/**
+	 * Creates an empty plot
+	 */
+	public Plot()
+	{
+		this(null, "", null);
+	}
+
+	/**
 	 * Creates a new plot
 	 * @param t The table from which the plot will fetch its data
 	 * @param title A title given to the plot
@@ -196,7 +204,7 @@ public abstract class Plot
 		this(t);
 		m_title = title;
 	}
-	
+
 	/**
 	 * Sets the table to be displayed by this plot
 	 * @param t The table
@@ -204,16 +212,19 @@ public abstract class Plot
 	 */
 	public Plot setTable(Table t)
 	{
-		m_table = t;
-		m_title = t.getTitle();
-		if (m_title.matches("Table \\d+"))
+		if (t != null)
 		{
-			// Replace "Table n" by "Plot n" as the default name
-			m_title = m_title.replace("Table", "Plot");
+			m_table = t;
+			m_title = t.getTitle();
+			if (m_title.matches("Table \\d+"))
+			{
+				// Replace "Table n" by "Plot n" as the default name
+				m_title = m_title.replace("Table", "Plot");
+			}
 		}
 		return this;
 	}
-	
+
 	/**
 	 * Gets the plot's ID
 	 * @return The ID
@@ -222,7 +233,7 @@ public abstract class Plot
 	{
 		return m_id;
 	}
-	
+
 	/**
 	 * Resets the ID counter for plots
 	 */
@@ -232,7 +243,7 @@ public abstract class Plot
 		s_idCounter = 1;
 		s_counterLock.unlock();
 	}
-	
+
 	/**
 	 * Gets the plot's title
 	 * @return The title
@@ -241,7 +252,7 @@ public abstract class Plot
 	{
 		return m_title;
 	}
-	
+
 	/**
 	 * Sets the plot's title
 	 * @param title The title
@@ -252,7 +263,7 @@ public abstract class Plot
 		m_title = title;
 		return this;
 	}
-	
+
 	/**
 	 * Sets the palette to display the graph
 	 * @param p The palette. Set to <tt>null</tt> to use the default palette.
@@ -273,13 +284,13 @@ public abstract class Plot
 		}
 		return m_id == ((Plot) o).m_id;
 	}
-	
+
 	@Override
 	public int hashCode()
 	{
 		return m_id;
 	}
-	
+
 	/**
 	 * Sets if this plot shows a key when it has multiple data series
 	 * @param b Set to {@code true} to enable the key, {@code false}
@@ -291,7 +302,7 @@ public abstract class Plot
 		m_hasKey = b;
 		return this;
 	}
-	
+
 	/**
 	 * Determines if this plot shows a key when it has multiple data series
 	 * @return {@code true} if the key is enabled, {@code false} otherwise
@@ -300,7 +311,7 @@ public abstract class Plot
 	{
 		return m_hasKey;
 	}
-	
+
 	/**
 	 * Gets an image from this plot
 	 * @param type The image type to produce
@@ -321,7 +332,7 @@ public abstract class Plot
 	{
 		return getImage(type, true);
 	}
-	
+
 	/**
 	 * Transforms a data table before being plotted. A plot can override this
 	 * method to perform pre-processing of the table.
@@ -336,7 +347,7 @@ public abstract class Plot
 		}
 		return m_transformation.transform(table);
 	}
-	
+
 	/**
 	 * Gets a reference to the data table from which this plot is drawn.
 	 * @return The table, or {@code null} if no table reference can be given
@@ -365,7 +376,7 @@ public abstract class Plot
 			return "png";
 		default:
 			return "";
-		
+
 		}
 	}
 
@@ -393,7 +404,7 @@ public abstract class Plot
 		}
 		return this;
 	}
-	
+
 	/**
 	 * Gets the plot's nickname
 	 * @return The nickname
