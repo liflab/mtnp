@@ -33,16 +33,6 @@ import ca.uqac.lif.mtnp.table.TableNode;
  */
 public class HtmlTableNodeRenderer extends TableNodeRenderer 
 {
-	public HtmlTableNodeRenderer(Table t)
-	{
-		super(t);
-	}
-
-	public HtmlTableNodeRenderer(Table t, Collection<CellCoordinate> to_highlight)
-	{
-		super(t, to_highlight);
-	}
-
 	/**
 	 * OS-dependent carriage return
 	 */
@@ -51,6 +41,38 @@ public class HtmlTableNodeRenderer extends TableNodeRenderer
 	protected int m_row = 0;
 
 	protected int m_col = 0;
+	
+	/**
+	 * The prefix of the URL for the explanation of a value
+	 */
+	protected String m_explainUrlPrefix;
+	
+	public HtmlTableNodeRenderer(Table t, String prefix)
+	{
+		super(t);
+		m_explainUrlPrefix = prefix;
+	}
+	
+	public HtmlTableNodeRenderer(Table t)
+	{
+		this(t, "explain");
+	}
+
+	public HtmlTableNodeRenderer(Table t, Collection<CellCoordinate> to_highlight)
+	{
+		super(t, to_highlight);
+	}
+	
+	/**
+	 * Sets the prefix of the URL for the explanation of a value. Each cell
+	 * in the HTML table is surrounded by a link leading to an explanation
+	 * page. 
+	 * @param prefix The URL prefix
+	 */
+	public void setExplainUrlPrefix(String prefix)
+	{
+		m_explainUrlPrefix = prefix;
+	}
 
 	@Override
 	public void startStructure(StringBuilder out)
@@ -118,7 +140,7 @@ public class HtmlTableNodeRenderer extends TableNodeRenderer
 			{
 				dp_id = nf.getDataPointId();//"""T" + m_table.getId() + ":" + cc.row + ":" + cc.col; //nf.getDataPointId();
 			}
-			out.append("<a class=\"explanation\" title=\"Click to see where this value comes from\" href=\"explain?id=").append(dp_id).append("\">");
+			out.append("<a class=\"explanation\" title=\"Click to see where this value comes from\" href=\"").append(m_explainUrlPrefix).append("?id=").append(dp_id).append("\">");
 		}
 		PrimitiveValue last = values.get(values.size() - 1);
 		if (last == null)
