@@ -22,15 +22,25 @@ import java.util.Iterator;
 import java.util.Set;
 
 import ca.uqac.lif.mtnp.table.HardTable;
+import ca.uqac.lif.mtnp.table.PrimitiveValue;
 import ca.uqac.lif.mtnp.table.Table;
+import ca.uqac.lif.mtnp.table.TableEntry;
 import ca.uqac.lif.mtnp.table.TempTable;
 import ca.uqac.lif.petitpoucet.NodeFunction;
 import de.erichseifert.gral.data.Column;
 import de.erichseifert.gral.data.DataListener;
+import de.erichseifert.gral.data.DataSeries;
 import de.erichseifert.gral.data.DataSource;
 import de.erichseifert.gral.data.Row;
 import de.erichseifert.gral.data.statistics.Statistics;
 
+/**
+ * A LabPal {@link Table} object that implements the {@link DataSource}
+ * interface of the GRAL library. This object is necessary to convert LabPal
+ * tables into objects that the GRAL library can handle.
+ *  
+ * @author Sylvain Hallé
+ */
 public class GralDataTable extends Table implements DataSource
 {
 	/**
@@ -38,8 +48,15 @@ public class GralDataTable extends Table implements DataSource
 	 */
 	protected Set<DataListener> m_dataListeners;
 	
+	/**
+	 * A reference to the original table, reified with concrete values
+	 */
 	protected HardTable m_table;
 	
+	/**
+	 * Creates a new GRAL data table out of an arbitrary table.
+	 * @param t The table
+	 */
 	private GralDataTable(Table t)
 	{
 		super();
@@ -47,6 +64,12 @@ public class GralDataTable extends Table implements DataSource
 		m_table = t.getDataTable();
 	}
 	
+	/**
+	 * Converts an arbitrary LabPal table into a GRAL data table.
+	 * @param t The table
+	 * @return A GRAL data table. If <tt>t</tt> is already a GRAL table,
+	 *   it is returned as is.
+	 */
 	public static GralDataTable toGral(Table t)
 	{
 		if (t instanceof GralDataTable)
@@ -138,8 +161,48 @@ public class GralDataTable extends Table implements DataSource
 		return m_table.getDependency(row, col);
 	}
 	
+	/**
+	 * Gets the name of the <i>i</i>-th column of the table 
+	 * @param col The index of the column
+	 * @return The name
+	 */
 	public String getColumnName(int col)
 	{
 		return m_table.getColumnName(col);
+	}
+	
+	/**
+	 * Creates a two-dimensional GRAL data series out of two columns of a
+	 * LabPal table. The resulting series will only contain lines of the
+	 * original tables where the values in both columns are defined, i.e.
+	 * all lines with missing values for these two columns will be filtered
+	 * out. This is necessary since GRAL fails to draw a plot (i.e. throws
+	 * a <tt>NullPointerException</tt>) when it contains
+	 * data series with missing values.
+	 *  
+	 * @param col_name_x The name of the first column
+	 * @param col_name_y The name of the second column. This will also be the
+	 *   name of the resulting GRAL data series. 
+	 * @param table The table from which to create the data series
+	 * @return The GRAL data series
+	 */
+	public static DataSeries getCleanedDataSeries(String col_name_x, String col_name_y, HardTable table)
+	{
+		TempTable temp_t = new TempTable(table.getId(), col_name_x, col_name_y);
+		for (TableEntry te : table.getEntries())
+		{
+			PrimitiveValue val_x = te.get(col_name_x);
+			PrimitiveValue val_y = te.get(col_name_y);
+			if (val_x != null && val_y != null)
+			{
+				TableEntry new_te = new TableEntry();
+				new_te.put(col_name_x, val_x);
+				new_te.put(col_name_y, val_y);
+				temp_t.add(new_te);
+			}
+		}
+		GralDataTable gdt = GralDataTable.toGral(temp_t);
+		DataSeries series = new DataSeries(col_name_y, gdt, 0, 1);
+		return series;
 	}
 }

@@ -22,7 +22,7 @@ import java.util.List;
 import ca.uqac.lif.petitpoucet.NodeFunction;
 
 /**
- * Data table only used temporarily. Typically, such a stable is a
+ * Data table only used temporarily. Typically, such a table is a
  * single-use object to render the contents of another table.
  * 
  * @author Sylvain Hallé

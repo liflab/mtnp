@@ -17,6 +17,8 @@
  */
 package ca.uqac.lif.mtnp;
 
+import ca.uqac.lif.mtnp.table.PrimitiveValue;
+
 /**
  * Provides various facilities for reading, casting and formatting values
  */
@@ -30,8 +32,12 @@ public class DataFormatter
 	/**
 	 * Version string
 	 */
-	protected static final String s_versionString = "0.1";
+	protected static final String s_versionString = "0.1.6";
 	
+	/**
+	 * Gets the version string of this library
+	 * @return The version string
+	 */
 	public static String getVersionString()
 	{
 		return s_versionString;
@@ -102,6 +108,14 @@ public class DataFormatter
 		if (o instanceof Number)
 		{
 			return ((Number) o).floatValue();
+		}
+		if (o instanceof PrimitiveValue)
+		{
+			PrimitiveValue pv = (PrimitiveValue) o;
+			if (pv.isNumeric())
+			{
+				return pv.numberValue().floatValue();
+			}
 		}
 		return null;
 	}

@@ -144,12 +144,13 @@ public class Scatterplot extends GralPlot implements ca.uqac.lif.mtnp.plot.Scatt
 	@Override
 	public de.erichseifert.gral.plots.Plot getPlot(HardTable source)
 	{
-		GralDataTable gdt = GralDataTable.toGral(source);
+		//GralDataTable gdt = GralDataTable.toGral(source);
 		int num_cols = source.getColumnCount();
 		DataSeries[] series = new DataSeries[num_cols - 1];
+		String col_0 = source.getColumnName(0);
 		for (int col = 1; col < num_cols; col++)
 		{
-			series[col - 1] = new DataSeries(gdt.getColumnName(col), gdt, 0, col);
+			series[col - 1] = GralDataTable.getCleanedDataSeries(col_0, source.getColumnName(col), source);
 		}
 		XYPlot plot = new XYPlot(series);
 		for (int col = 1; col < num_cols; col++)
