@@ -172,7 +172,7 @@ public class PrimitiveValue implements Comparable<PrimitiveValue>
 		}
 		if (m_string != null)
 		{
-			return "\" + m_string + \"";
+			return "\"" + m_string + "\"";
 		}
 		return "\"null\"";
 	}
