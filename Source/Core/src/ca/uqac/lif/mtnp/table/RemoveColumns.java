@@ -20,6 +20,8 @@ package ca.uqac.lif.mtnp.table;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.uqac.lif.petitpoucet.DirectValue;
+
 /**
  * Removes columns from a table
  * @author Sylvain Hallé
@@ -79,9 +81,13 @@ public class RemoveColumns implements TableTransformation
 		for (TableEntry te : old_entries)
 		{
 			TableEntry new_te = new TableEntry();
-			for (String k : new_col_names)
+			for (int j = 0; j < new_col_names.length; j++)
 			{
+				String k = new_col_names[j];
 				new_te.put(k, te.get(k));
+				DirectValue dv = new DirectValue();
+				dv.add(new TableCellNode(table, te.getRowIndex(), j));
+				new_te.addDependency(k, dv);
 			}
 			new_entries.add(new_te);
 		}

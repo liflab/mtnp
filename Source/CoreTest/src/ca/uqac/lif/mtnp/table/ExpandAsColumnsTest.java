@@ -72,4 +72,29 @@ public class ExpandAsColumnsTest
 		assertEquals(1, entries.size());
 		System.out.println(ht_out.toString());
 	}
+	
+	@Test
+	public void test3()
+	{
+		HardTable ht = new HardTable("A", "X", "Y", "Z");
+		{
+			TableEntry te = new TableEntry("A", 2);
+			te.put("X", 0);
+			te.put("Y", "B");
+			te.put("Z", 5);
+			ht.add(te);
+		}
+		{
+			TableEntry te = new TableEntry("A", 2);
+			te.put("X", 0);
+			te.put("Y", "C");
+			te.put("Z", 1);
+			ht.add(te);
+		}
+		TransformedTable tt = new TransformedTable(new Composition(new RemoveColumns("A", "X"), new ExpandAsColumns("Y", "Z")), ht);
+		TempTable ht_out = tt.getDataTable();
+		List<TableEntry> entries = ht_out.getEntries();
+		assertEquals(1, entries.size());
+		System.out.println(ht_out.toString());
+	}
 }
