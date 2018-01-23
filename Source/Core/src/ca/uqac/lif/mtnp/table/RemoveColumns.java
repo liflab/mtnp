@@ -74,7 +74,19 @@ public class RemoveColumns implements TableTransformation
 			new_col_names[i] = name;
 			i++;
 		}
-		return table.getDataTable(new_col_names);
+		List<TableEntry> old_entries = table.getEntries();
+		List<TableEntry> new_entries = new ArrayList<TableEntry>(old_entries.size());
+		for (TableEntry te : old_entries)
+		{
+			TableEntry new_te = new TableEntry();
+			for (String k : new_col_names)
+			{
+				new_te.put(k, te.get(k));
+			}
+			new_entries.add(new_te);
+		}
+		TempTable tt = new TempTable(table.getId(), new_entries, new_col_names);
+		return tt;
 	}
 	
 	
