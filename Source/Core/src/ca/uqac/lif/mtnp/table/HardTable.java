@@ -30,6 +30,7 @@ import java.util.Scanner;
 import java.util.Set;
 
 import ca.uqac.lif.mtnp.DataFormatter;
+import ca.uqac.lif.mtnp.table.rendering.CsvTableRenderer;
 import ca.uqac.lif.petitpoucet.NodeFunction;
 
 /**
@@ -322,6 +323,22 @@ public class HardTable extends Table
 			toHtml(child, out, depth + 1, total_depth);
 		}
 	}	
+	
+	/**
+	 * Produces a flat CSV rendition of the table, by ordering the
+	 * columns in a specific way
+	 * @param sort_order An array of column names specifying the order
+	 *  in which they should be shown
+	 * @param separator The symbol used as the separator for values
+	 * @param missing The symbol used for missing data
+	 * @return A string containing the CSV code for the table
+	 */
+	protected String toCsv(String[] sort_order, String separator, String missing)
+	{
+		TableNode node = getTree(sort_order);
+		CsvTableRenderer ctr = new CsvTableRenderer(this, separator, missing);
+		return ctr.render(node, sort_order);
+	}
 
 	public PrimitiveValue get(int col, int row)
 	{
@@ -489,43 +506,9 @@ public class HardTable extends Table
 	 * @param missing The symbol used for missing data
 	 * @return The CSV contents
 	 */
-
 	public String toCsv(String separator, String missing)
 	{
 		return toCsv(m_preferredOrdering, separator, missing);
-	}
-	
-	/**
-	 * Returns the contents of the table as a CSV string
-	 * @param ordering The ordering of the columns
-	 * @param separator The symbol used as the separator for values
-	 * @param missing The symbol used for missing data
-	 * @return The CSV contents
-	 */
-	public String toCsv(String[] ordering, String separator, String missing)
-	{
-		StringBuilder out = new StringBuilder();
-		for (TableEntry tab_e : m_entries)
-		{
-			for (int i = 0; i < ordering.length; i++)
-			{
-				if (i > 0)
-				{
-					out.append(separator);
-				}
-				if (tab_e.containsKey(ordering[i]) && tab_e.get(ordering[i]) != null)
-				{
-					PrimitiveValue pv = tab_e.get(ordering[i]);
-					out.append(pv.toQuotedString());
-				}
-				else
-				{
-					out.append(missing);
-				}
-			}
-			out.append(DataFormatter.CRLF);
-		}
-		return out.toString();
 	}
 	
 	@Override

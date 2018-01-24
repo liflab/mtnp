@@ -32,7 +32,7 @@ public class DataFormatter
 	/**
 	 * Version string
 	 */
-	protected static final String s_versionString = "0.1.6";
+	protected static final String s_versionString = FrontEnd.s_majorVersionNumber + "." + FrontEnd.s_minorVersionNumber + "." + FrontEnd.s_revisionVersionNumber;
 	
 	/**
 	 * Gets the version string of this library

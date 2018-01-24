@@ -7,22 +7,22 @@ public class FrontEnd
 	/**
 	 * The major version number
 	 */
-	private static final transient int s_majorVersionNumber = 0;
+	public static final transient int s_majorVersionNumber = 0;
 
 	/**
 	 * The minor version number
 	 */
-	private static final transient int s_minorVersionNumber = 1;
+	public static final transient int s_minorVersionNumber = 1;
 
 	/**
 	 * The revision version number
 	 */
-	private static final transient int s_revisionVersionNumber = 3;
+	public static final transient int s_revisionVersionNumber = 7;
 	
 	/**
 	 * The version of GRAL embedded in MTNP
 	 */
-	private static final transient String s_gralVersionString = "0.11";
+	public static final transient String s_gralVersionString = "0.11";
 
 	public static void main(String[] args)
 	{
