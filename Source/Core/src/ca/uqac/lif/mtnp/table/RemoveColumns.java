@@ -76,6 +76,15 @@ public class RemoveColumns implements TableTransformation
 			new_col_names[i] = name;
 			i++;
 		}
+		int[] old_indices = new int[new_col_names.length];
+		// Keep the correspondence between the column number in the original table
+		int old_j = 0;
+		for (int j = 0; j < new_col_names.length; j++)
+		{
+			while (col_names[old_j].compareTo(new_col_names[j]) != 0)
+				old_j++;
+			old_indices[j] = old_j;
+		}
 		List<TableEntry> old_entries = table.getEntries();
 		List<TableEntry> new_entries = new ArrayList<TableEntry>(old_entries.size());
 		for (TableEntry te : old_entries)
@@ -86,7 +95,7 @@ public class RemoveColumns implements TableTransformation
 				String k = new_col_names[j];
 				new_te.put(k, te.get(k));
 				DirectValue dv = new DirectValue();
-				dv.add(new TableCellNode(table, te.getRowIndex(), j));
+				dv.add(new TableCellNode(table, te.getRowIndex(), old_indices[j]));
 				new_te.addDependency(k, dv);
 			}
 			new_entries.add(new_te);
