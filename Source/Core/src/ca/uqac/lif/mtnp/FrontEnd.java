@@ -17,7 +17,7 @@ public class FrontEnd
 	/**
 	 * The revision version number
 	 */
-	public static final transient int s_revisionVersionNumber = 7;
+	public static final transient int s_revisionVersionNumber = 8;
 	
 	/**
 	 * The version of GRAL embedded in MTNP
