@@ -288,17 +288,26 @@ public class HardTable extends Table
 	 */
 	protected void toHtml(TableNode cur_node, StringBuilder out, int depth, int total_depth)
 	{
+
 		if (depth > 0)
 		{
 			out.append("<td>");
-			if (cur_node.m_value.isString())
+			
+			if (cur_node == null)
 			{
-				out.append(cur_node.m_value);
+
+				out.append("");
 			}
 			else if (cur_node.m_value == null)
 			{
+				
 				out.append("");
 			}
+			else if (cur_node.m_value.isString())
+			{
+				out.append(cur_node.m_value);
+			}
+		
 			else
 			{
 				out.append(cur_node.m_value);

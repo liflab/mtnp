@@ -114,7 +114,7 @@ public abstract class TableNodeRenderer
 	
 	protected void renderRecursive(TableNode cur_node, List<PrimitiveValue> values, StringBuilder out, int max_depth)
 	{
-		if (values.size() > 0)
+		if (values!=null && values.size() > 0)
 		{
 			printCell(out, values, cur_node.countLeaves(), max_depth, cur_node);			
 		}
