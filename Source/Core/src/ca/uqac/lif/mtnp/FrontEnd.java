@@ -17,7 +17,7 @@ public class FrontEnd
 	/**
 	 * The revision version number
 	 */
-	public static final transient int s_revisionVersionNumber = 8;
+	public static final transient int s_revisionVersionNumber = 9;
 	
 	/**
 	 * The version of GRAL embedded in MTNP
@@ -36,7 +36,7 @@ public class FrontEnd
 	{
 		String out = "";
 		out += "MTNP " + formatVersion() + " - Manipulate Tables N'Plots\n";
-		out += "(C) 2017 Laboratoire d'informatique formelle\nUniversité du Québec à Chicoutimi, Canada\n";
+		out += "(C) 2017-2019 Laboratoire d'informatique formelle\nUniversité du Québec à Chicoutimi, Canada\n";
 		return out;
 	}
 

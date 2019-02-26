@@ -26,7 +26,7 @@
   <name>MTNP</name>
   
   <!-- The project's version number -->
-  <version>0.1.8-alpha</version>
+  <version>0.1.9-alpha</version>
   
   <!-- The project's author. Currently this only
   shows up in the footer of the Javadoc documentation. -->
@@ -61,6 +61,7 @@
       Petit Poucet. For managing provenance data
       -->
       <name>Petit Poucet</name>
+      <bundle>true</bundle>
       <classname>ca.uqac.lif.petitpoucet.Main</classname>
       <files>
         <zip>https://github.com/liflab/petitpoucet/releases/download/v0.2-alpha/petitpoucet-0.2-alpha.zip</zip>
@@ -71,6 +72,7 @@
       GRAL. Stand-alone plotting library
       -->
       <name>GRAL</name>
+      <bundle>true</bundle>
       <classname>de.erichseifert.gral.data.DataSource</classname>
       <files>
         <jar>https://www.erichseifert.de/dev/gral/0.11/gral-core-0.11.jar</jar>

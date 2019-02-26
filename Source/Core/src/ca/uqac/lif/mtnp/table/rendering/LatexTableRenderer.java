@@ -211,7 +211,7 @@ public class LatexTableRenderer extends TableNodeRenderer
 			m_keyBuffer.append("{");
 		}
 		PrimitiveValue last = values.get(values.size() - 1);
-		if (!last.isNull())
+		if (last != null && !last.isNull())
 		{
 			if (coordinates.size() > 0)
 			{
