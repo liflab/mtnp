@@ -19,6 +19,7 @@ package ca.uqac.lif.mtnp.plot.gral;
 
 import static org.junit.Assert.*;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import ca.uqac.lif.mtnp.plot.Plot.ImageType;
@@ -33,7 +34,7 @@ import ca.uqac.lif.mtnp.table.TableEntry;
  */
 public class PlotTest
 {
-	@Test
+	@Test(timeout = 5000)
 	public void testScatterplot1()
 	{
 		HardTable ht = new HardTable("a", "b", "c");
@@ -45,7 +46,22 @@ public class PlotTest
 		assertNotNull(img_contents);
 	}
 	
-	@Test
+	@Test(timeout = 5000)
+	@Ignore
+	public void testScatterplot2()
+	{
+		// This test times out due to this bug in GRAL
+		// https://github.com/eseifert/gral/issues/173
+		HardTable ht = new HardTable("a", "b", "c");
+		ht.add(createEntry(0, 0, 0));
+		ht.add(createEntry(1, 2, 3));
+		ht.add(createEntry(2, 4, 6));
+		Scatterplot sp = new Scatterplot(ht);
+		byte[] img_contents = sp.getImage(ImageType.PDF);
+		assertNotNull(img_contents);
+	}
+	
+	@Test(timeout = 5000)
 	public void testPieChart1()
 	{
 		HardTable ht = new HardTable("a", "b", "c");
@@ -54,6 +70,21 @@ public class PlotTest
 		ht.add(createEntry(2, 4, 6));
 		PieChart sp = new PieChart(ht);
 		byte[] img_contents = sp.getImage(ImageType.PNG);
+		assertNotNull(img_contents);
+	}
+	
+	@Test(timeout = 5000)
+	@Ignore
+	public void testPieChart2()
+	{
+		// This test times out due to this bug in GRAL
+		// https://github.com/eseifert/gral/issues/173
+		HardTable ht = new HardTable("a", "b", "c");
+		ht.add(createEntry(0, 0, 0));
+		ht.add(createEntry(1, 2, 3));
+		ht.add(createEntry(2, 4, 6));
+		PieChart sp = new PieChart(ht);
+		byte[] img_contents = sp.getImage(ImageType.PDF);
 		assertNotNull(img_contents);
 	}
 	

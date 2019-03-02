@@ -1,6 +1,6 @@
 /*
   MTNP: Manipulate Tables N'Plots
-  Copyright (C) 2017 Sylvain Hallé
+  Copyright (C) 2017-2019 Sylvain Hallé
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -84,14 +84,21 @@ public class GralPlot extends Plot
 	}
 
 	/**
-	 * Runs GnuPlot on a file and returns the resulting graph
-	 * @param term The terminal (i.e. PNG, etc.) to use for the image
+	 * Runs GRAL on a file and returns the resulting graph
+	 * @param term The terminal (i.e. PNG, etc.) to use for the image.
+	 * For GRAL plots, PDF is not supported.
 	 * @param with_caption Set to true to ignore the plot's caption when
 	 *   rendering
 	 * @return The (binary) contents of the image produced by Gnuplot
 	 */
 	public final byte[] getImage(ImageType term, boolean with_caption)
 	{
+		if (term == ImageType.PDF)
+		{
+			// Exporting GRAL plots to PDF does not work due to this bug
+			// https://github.com/eseifert/gral/issues/173
+			return null;
+		}
 		de.erichseifert.gral.plots.Plot plot = getPlot();
 		if (!with_caption)
 		{
