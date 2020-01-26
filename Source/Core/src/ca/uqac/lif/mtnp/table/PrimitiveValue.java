@@ -1,6 +1,6 @@
 /*
   MTNP: Manipulate Tables N'Plots
-  Copyright (C) 2017 Sylvain Hallé
+  Copyright (C) 2017-2020 Sylvain Hallé
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -30,6 +30,8 @@ public class PrimitiveValue implements Comparable<PrimitiveValue>
 	
 	protected Number m_number;
 	
+	protected Boolean m_boolean;
+	
 	public static PrimitiveValue getInstance(Object o)
 	{
 		if (o instanceof PrimitiveValue)
@@ -48,12 +50,16 @@ public class PrimitiveValue implements Comparable<PrimitiveValue>
 		{
 			return;
 		}
-		if (o instanceof Number)
+		if (o instanceof Boolean)
+		{
+			m_boolean = (Boolean) o;
+		}
+		else if (o instanceof Number)
 		{
 			m_number = (Number) o;
 			return;
 		}
-		if (o instanceof String)
+		else if (o instanceof String)
 		{
 			try
 			{
@@ -84,6 +90,11 @@ public class PrimitiveValue implements Comparable<PrimitiveValue>
 		return m_number != null;
 	}
 	
+	public boolean isBoolean()
+	{
+		return m_boolean != null;
+	}
+	
 	public boolean isString()
 	{
 		return m_number == null;
@@ -91,12 +102,17 @@ public class PrimitiveValue implements Comparable<PrimitiveValue>
 	
 	public boolean isNull()
 	{
-		return m_number == null && m_string == null;
+		return m_number == null && m_string == null && m_boolean == null;
 	}
 	
 	public Number numberValue()
 	{
 		return m_number;
+	}
+	
+	public Boolean booleanValue()
+	{
+		return m_boolean;
 	}
 	
 	public String stringValue()
@@ -125,6 +141,23 @@ public class PrimitiveValue implements Comparable<PrimitiveValue>
 		{
 			// Nulls go last
 			return 1;
+		}
+		if (m_boolean != null && o.m_boolean != null)
+		{
+			// Booleans are compared with false going first
+			if (m_boolean == o.m_boolean)
+			{
+				// Equal
+				return 0;
+			}
+			else
+			{
+				if (m_boolean == false)
+				{
+					return -1;
+				}
+				return 1;
+			}
 		}
 		if (m_number != null && o.m_number != null)
 		{
