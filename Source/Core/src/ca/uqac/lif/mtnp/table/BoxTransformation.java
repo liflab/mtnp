@@ -1,6 +1,6 @@
 /*
   MTNP: Manipulate Tables N'Plots
-  Copyright (C) 2017 Sylvain Hallé
+  Copyright (C) 2017-2020 Sylvain Hallé
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -38,19 +38,20 @@ import ca.uqac.lif.petitpoucet.NodeFunction;
  * </table>
  * the box transformation will produce the following result:
  * <table border="1">
- * <tr><th>x</th><th>Min</th><th>Q1</th><th>Q2</th><th>Q3</th><th>Max</th></tr>
- * <tr><td>A</td><td>&hellip;</td><td>&hellip;</td><td>&hellip;</td><td>&hellip;</td><td>&hellip;</td></tr>
- * <tr><td>B</td><td>&hellip;</td><td>&hellip;</td><td>&hellip;</td><td>&hellip;</td><td>&hellip;</td></tr>
- * <tr><td>C</td><td>&hellip;</td><td>&hellip;</td><td>&hellip;</td><td>&hellip;</td><td>&hellip;</td></tr>
+ * <tr><th>x</th><th>Min</th><th>Q1</th><th>Q2</th><th>Q3</th><th>Max</th><th>Label</th></tr>
+ * <tr><td>1</td><td>&hellip;</td><td>&hellip;</td><td>&hellip;</td><td>&hellip;</td><td>&hellip;</td><td>A</td></tr>
+ * <tr><td>2</td><td>&hellip;</td><td>&hellip;</td><td>&hellip;</td><td>&hellip;</td><td>&hellip;</td><td>B</td></tr>
+ * <tr><td>3</td><td>&hellip;</td><td>&hellip;</td><td>&hellip;</td><td>&hellip;</td><td>&hellip;</td><td>C</td></tr>
  * </table> 
  * The columns represent respectively:
  * <ol>
- * <li>The name of the column header in the original table</li>
+ * <li>A line counter</li>
  * <li>The minimum value of that column (Min)</li>
  * <li>The value of the first quartile (Q1)</li>
  * <li>The value of the second quartile (Q2)</li>
  * <li>The value of the third quartile (Q3)</li>
- * <li>The maximum value of that column (Max)</li> 
+ * <li>The maximum value of that column (Max)</li>
+ * <li>The name of the column header in the original table</li> 
  * </ol>
  * 
  * This transformation is called a "box transform", because it produces a
@@ -67,6 +68,7 @@ public class BoxTransformation implements TableTransformation
 	protected String m_captionQ2 = "Q2";
 	protected String m_captionQ3 = "Q3";
 	protected String m_captionMax = "Max";
+	protected String m_captionLabel = "Label";
 	
 	public BoxTransformation()
 	{
@@ -82,9 +84,10 @@ public class BoxTransformation implements TableTransformation
 		m_captionQ2 = prefix + "_Q2";
 		m_captionQ3 = prefix + "_Q3";
 		m_captionMax = prefix + "_Max";
+		m_captionLabel = prefix + "_Label";
 	}
 	
-	public BoxTransformation(String x, String min, String q1, String q2, String q3, String max)
+	public BoxTransformation(String x, String min, String q1, String q2, String q3, String max, String label)
 	{
 		super();
 		m_captionX = x;
@@ -93,13 +96,14 @@ public class BoxTransformation implements TableTransformation
 		m_captionQ2 = q2;
 		m_captionQ3 = q3;
 		m_captionMax = max;
+		m_captionLabel = label;
 	}
 
 	@Override
 	public TempTable transform(TempTable... tables) 
 	{
 		TempTable table = tables[0];
-		TempTable new_table = new TempTable(-10, m_captionX, m_captionMin, m_captionQ1, m_captionQ2, m_captionQ3, m_captionMax);
+		TempTable new_table = new TempTable(-10, m_captionX, m_captionMin, m_captionQ1, m_captionQ2, m_captionQ3, m_captionMax, m_captionLabel);
 		int col = 0;
 		for (String col_name : table.getColumnNames())
 		{
@@ -129,12 +133,13 @@ public class BoxTransformation implements TableTransformation
 			}
 			float num_values = values.size();
 			TableEntry te = new TableEntry();
-			te.put(m_captionX, DataFormatter.cast(col_name));
+			te.put(m_captionX, col);
 			te.put(m_captionMin, values.get(0));
 			te.put(m_captionQ1, values.get(Math.max(0, (int)(num_values * 0.25) - 1)));
 			te.put(m_captionQ2, values.get(Math.max(0, (int)(num_values * 0.5) - 1)));
 			te.put(m_captionQ3, values.get(Math.max(0, (int)(num_values * 0.75) - 1)));
 			te.put(m_captionMax, values.get(Math.max(0, (int) num_values - 1)));
+			te.put(m_captionLabel, DataFormatter.cast(col_name));
 			te.addDependency(m_captionMin, new AggregateFunction("Minimum value of column " + col_name + " in Table #" + table.m_id, deps));
 			te.addDependency(m_captionQ1, new AggregateFunction("First quartile " + col_name + " in Table #" + table.m_id, deps));
 			te.addDependency(m_captionQ2, new AggregateFunction("Median of column " + col_name + " in Table #" + table.m_id, deps));

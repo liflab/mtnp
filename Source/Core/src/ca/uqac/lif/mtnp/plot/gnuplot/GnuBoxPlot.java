@@ -1,6 +1,6 @@
 /*
   MTNP: Manipulate Tables N'Plots
-  Copyright (C) 2017 Sylvain Hallé
+  Copyright (C) 2017-2020 Sylvain Hallé
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -90,6 +90,10 @@ public class GnuBoxPlot extends GnuPlot implements BoxPlot
 		out.append("set ytics nomirror").append(DataFormatter.CRLF);
 		out.append("set xlabel \"").append(m_captionX).append("\"").append(DataFormatter.CRLF);
 		out.append("set ylabel \"").append(m_captionY).append("\"").append(DataFormatter.CRLF);
+		if (!m_hasKey)
+		{
+			out.append("set key off\n");
+		}
 		int num_series = (tab.getColumnCount() - 1) / 5;
 		float offset = 0, offset_step = 0.3f;
 		if (num_series % 2 == 0)
@@ -106,7 +110,7 @@ public class GnuBoxPlot extends GnuPlot implements BoxPlot
 			String signum = "+";
 			if (offset < 0)
 				signum = "-";
-			out.append("'-' using ($1").append(signum).append(Math.abs(offset)).append("):").append(5 * s_count + 3).append(":").append(5 * s_count + 2).append(":").append(5 * s_count + 6).append(":").append(5 * s_count + 5).append(" with candlesticks title \"").append(getSeriesName(s_count)).append("\" whiskerbars, ");
+			out.append("'-' using ($1").append(signum).append(Math.abs(offset)).append("):").append(5 * s_count + 3).append(":").append(5 * s_count + 2).append(":").append(5 * s_count + 6).append(":").append(5 * s_count + 5).append(":xticlabels(").append(5 * s_count + 7).append(") with candlesticks title \"").append(getSeriesName(s_count)).append("\" whiskerbars, ");
 			out.append("'' using ($1").append(signum).append(Math.abs(offset)).append("):").append(5 * s_count + 4).append(":").append(5 * s_count + 4).append(":").append(5 * s_count + 4).append(":").append(5 * s_count + 4).append(" with candlesticks linetype -1 linewidth 2 notitle, ");
 			offset += offset_step;
 		}
