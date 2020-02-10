@@ -162,7 +162,15 @@ public class PrimitiveValue implements Comparable<PrimitiveValue>
 		if (m_number != null && o.m_number != null)
 		{
 			// Numbers are compared as numbers
-			return (int) Math.floor(m_number.doubleValue() - o.m_number.doubleValue());
+			if (m_number.doubleValue() > o.m_number.doubleValue())
+			{
+				return 1;
+			}
+			if (m_number.doubleValue() < o.m_number.doubleValue())
+			{
+				return -1;
+			}
+			return 0;
 		}
 		if (m_number == null && o.m_number == null && m_string == null && o.m_string == null)
 		{
