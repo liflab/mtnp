@@ -20,12 +20,36 @@ package ca.uqac.lif.mtnp.table;
 import ca.uqac.lif.petitpoucet.NodeFunction;
 
 /**
- * Table that accumulates frequency values
+ * Table that accumulates two-dimensional frequency values. Entries can be
+ * added to the table in two ways:
+ * <ul>
+ * <li>By calling {@link #add(double, double, double)}, where the first two
+ * arguments represent the x-y coordinates and the third represents the
+ * value to increment in the corresponding bin of the frequency table</li>
+ * <li>By calling {@link #add(TableEntry)}, and passing a tuple with three
+ * attributes called "x", "y" and "v" whose value corresponds to the three
+ * arguments that would be given to the previous method</li>
+ * </ul>
  * @since 0.1.13
  * @author Sylvain Hallé
  */
-public class FrequencyTable extends Table
+public class FrequencyTable extends HardTable
 {
+	/**
+	 * A caption to denote the "x" value in a tuple given to the table
+	 */
+	public static final transient String CAPTION_X = "x";
+	
+	/**
+	 * A caption to denote the "y" value in a tuple given to the table
+	 */
+	public static final transient String CAPTION_Y = "y";
+	
+	/**
+	 * A caption to denote the value in a tuple given to the table
+	 */
+	public static final transient String CAPTION_V = "v";
+	
 	/**
 	 * The preconfigured minimum value of the generated frequency table
 	 * along the x axis
@@ -231,6 +255,27 @@ public class FrequencyTable extends Table
 		return m_scaleY;
 	}
 	
+	@Override
+	public void add(TableEntry e)
+	{
+		Number x = e.get(CAPTION_X).numberValue();
+		Number y = e.get(CAPTION_Y).numberValue();
+		Number v = e.get(CAPTION_V).numberValue();
+		if (x == null || y == null)
+		{
+			// Invalid tuple: ignore
+			return;
+		}
+		double d_x = x.doubleValue();
+		double d_y = y.doubleValue();
+		double d_v = 0;
+		if (v != null)
+		{
+			d_v = v.doubleValue();
+		}
+		add(d_x, d_y, d_v);
+	}
+	
 	/**
 	 * Adds a value to the frequency table
 	 * @param x The x position
@@ -264,7 +309,7 @@ public class FrequencyTable extends Table
 	}
 
 	@Override
-	protected TempTable getDataTable(boolean link_to_experiments, String... ordering)
+	public TempTable getDataTable(boolean link_to_experiments, String... ordering)
 	{
 		// Ignore column ordering, as it is important in such a table
 		return getDataTable(link_to_experiments);
@@ -292,5 +337,18 @@ public class FrequencyTable extends Table
 	{
 		// No dependency given
 		return null;
+	}
+	
+	@Override
+	public void clear()
+	{
+		super.clear();
+		for (int i = 0; i < m_numBucketsY; i++)
+		{
+			for (int j = 0; j < m_numBucketsX; j++)
+			{
+				m_values[i][j] = 0;
+			}
+		}
 	}
 }

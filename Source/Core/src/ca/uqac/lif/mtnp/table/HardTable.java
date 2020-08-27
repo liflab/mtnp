@@ -618,4 +618,11 @@ public class HardTable extends Table
 		}
 		return dt;
 	}
+	
+	@Override
+	public void clear()
+	{
+		super.clear();
+		m_entries.clear();
+	}
 }

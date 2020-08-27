@@ -295,9 +295,21 @@ public abstract class Table implements DataOwner
 		return false;
 	}
 	
+	/**
+	 * Gets the name given to the table.
+	 * @return The name
+	 */
 	public String getName()
 	{
 		return m_title;
+	}
+	
+	/**
+	 * Clears the content of the table.
+	 */
+	public void clear()
+	{
+		// Nothing to do
 	}
 	
 }

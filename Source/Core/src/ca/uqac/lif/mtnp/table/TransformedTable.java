@@ -87,4 +87,13 @@ public class TransformedTable extends Table
 		return dt.dependsOn(row, col);
 	}
 
+	@Override
+	public void clear()
+	{
+		super.clear();
+		for (Table t : m_inputTables)
+		{
+			t.clear();
+		}
+	}
 }
