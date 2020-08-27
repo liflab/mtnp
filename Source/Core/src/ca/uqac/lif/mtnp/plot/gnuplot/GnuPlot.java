@@ -1,6 +1,6 @@
 /*
   MTNP: Manipulate Tables N'Plots
-  Copyright (C) 2017 Sylvain Hallé
+  Copyright (C) 2017-2020 Sylvain Hallé
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -60,7 +60,17 @@ public abstract class GnuPlot extends Plot
 	 * The fill style used for the plot
 	 */
 	public static enum FillStyle {SOLID, NONE, PATTERN};
-
+	
+	/**
+	 * An string defining the plot's borders
+	 */
+	protected String m_border = "";
+	
+	/**
+	 * An optional string containing custom parameters that will be put in
+	 * the plot's header
+	 */
+	protected String m_customParameters = "";
 
 	/**
 	 * The time to wait before polling GnuPlot's result
@@ -95,6 +105,32 @@ public abstract class GnuPlot extends Plot
 	public final String toGnuplot(ImageType term, boolean with_caption)
 	{
 		return toGnuplot(term, "", with_caption);
+	}
+	
+	/**
+	 * Sets the border settings for the plot.
+	 * @param border A parameter string defining the border for the plot,
+	 * according to the <a href="http://gnuplot.sourceforge.net/docs_4.2/node162.html">GnuPlot</a>
+	 * syntax
+	 * @return This plot
+	 */
+	public GnuPlot setBorder(String border)
+	{
+		m_border = border;
+		return this;
+	}
+	
+	/**
+	 * Sets custom parameters to be added to the plot's header. This method can
+	 * be used to define settings that are not directly handled through object
+	 * methods.
+	 * @param s The parameter string
+	 * @return This plot
+	 */
+	public GnuPlot setCustomHeader(String s)
+	{
+		m_customParameters = s;
+		return this;
 	}
 
 	/**
@@ -216,6 +252,14 @@ public abstract class GnuPlot extends Plot
 			break;
 		default:
 			// Do nothing
+		}
+		if (m_border != null && !m_border.isEmpty())
+		{
+			out.append("set border ").append(m_border).append("\n");
+		}
+		if (m_customParameters != null && m_customParameters.isEmpty())
+		{
+			out.append(m_customParameters).append("\n");
 		}
 		return out;
 	}
