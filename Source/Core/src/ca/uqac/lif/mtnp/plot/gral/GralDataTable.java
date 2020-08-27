@@ -1,6 +1,6 @@
 /*
   MTNP: Manipulate Tables N'Plots
-  Copyright (C) 2017 Sylvain Hallé
+  Copyright (C) 2017-2020 Sylvain Hallé
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -204,5 +204,16 @@ public class GralDataTable extends Table implements DataSource
 		GralDataTable gdt = GralDataTable.toGral(temp_t);
 		DataSeries series = new DataSeries(col_name_y, gdt, 0, 1);
 		return series;
+	}
+
+	@Override
+	public Table duplicate(boolean with_state)
+	{
+		GralDataTable t = new GralDataTable(m_table);
+		if (with_state)
+		{
+			throw new UnsupportedOperationException("GRAL data tables do not support stateful duplication");
+		}
+		return t;
 	}
 }

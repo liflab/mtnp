@@ -96,4 +96,17 @@ public class TransformedTable extends Table
 			t.clear();
 		}
 	}
+	
+	@Override
+	public TransformedTable duplicate(boolean with_state)
+	{
+		Table[] tables = new Table[m_inputTables.length];
+		for (int i = 0; i < m_inputTables.length; i++)
+		{
+			tables[i] = m_inputTables[i].duplicate(with_state);
+		}
+		TransformedTable tt = new TransformedTable(m_transformation, tables);
+		copyInto(tt, with_state);
+		return tt;
+	}
 }

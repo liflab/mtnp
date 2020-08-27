@@ -1,6 +1,6 @@
 /*
   MTNP: Manipulate Tables N'Plots
-  Copyright (C) 2017 Sylvain Hallé
+  Copyright (C) 2017-2020 Sylvain Hallé
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -310,6 +310,28 @@ public abstract class Table implements DataOwner
 	public void clear()
 	{
 		// Nothing to do
+	}
+	
+	/**
+	 * Creates a duplicate copy of the table.
+	 * @param with_state Set to <tt>true</tt> to copy the table's
+	 * data, otherwise a new empty object with the same settings
+	 * will be produced
+	 * @return A new table
+	 */
+	public abstract Table duplicate(boolean with_state);
+	
+	/**
+	 * Copies fields of the current table into another table
+	 * @param t The other table
+	 * @param with_state
+	 */
+	protected void copyInto(Table t, boolean with_state)
+	{
+		t.m_showInList = m_showInList;
+		t.m_description = m_description;
+		t.m_title = m_title;
+		t.m_nickname = m_nickname;
 	}
 	
 }

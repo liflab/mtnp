@@ -625,4 +625,28 @@ public class HardTable extends Table
 		super.clear();
 		m_entries.clear();
 	}
+	
+	@Override
+	public HardTable duplicate(boolean with_state)
+	{
+		HardTable ht = new HardTable(getColumnNames());		
+		copyInto(ht, with_state);
+		return ht;
+	}
+	
+	@Override
+	protected void copyInto(Table t, boolean with_state)
+	{
+		super.copyInto(t, with_state);
+		if (!(t instanceof HardTable))
+		{
+			return;
+		}
+		HardTable ht = (HardTable) t;
+		ht.m_preferredOrdering = m_preferredOrdering;
+		if (with_state)
+		{
+			ht.m_entries.addAll(m_entries);
+		}
+	}
 }

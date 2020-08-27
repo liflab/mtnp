@@ -39,17 +39,17 @@ public class FrequencyTable extends HardTable
 	 * A caption to denote the "x" value in a tuple given to the table
 	 */
 	public static final transient String CAPTION_X = "x";
-	
+
 	/**
 	 * A caption to denote the "y" value in a tuple given to the table
 	 */
 	public static final transient String CAPTION_Y = "y";
-	
+
 	/**
 	 * A caption to denote the value in a tuple given to the table
 	 */
 	public static final transient String CAPTION_V = "v";
-	
+
 	/**
 	 * The preconfigured minimum value of the generated frequency table
 	 * along the x axis
@@ -90,34 +90,56 @@ public class FrequencyTable extends HardTable
 	 * The actual values of the table
 	 */
 	protected double[][] m_values;
-	
+
 	/**
 	 * The lower value of each bucket on the x axis
 	 */
 	protected double[] m_scaleX;
-	
+
 	/**
 	 * The lower value of each bucket on the y axis
 	 */
 	protected double[] m_scaleY;
-	
+
 	/**
 	 * An array containing the names given to the columns of the resulting
 	 * table
 	 */
 	protected String[] m_columnNames;
-	
+
 	/**
 	 * The width of each bucket on the x axis
 	 */
 	protected double m_widthX;
-	
+
 	/**
 	 * The width of each bucket on the y axis
 	 */
 	protected double m_widthY;
-	
-	public FrequencyTable(double min_x, double max_x, int b_x, double min_y, double max_y, int b_y)
+
+	/**
+	 * An optional default increment
+	 */
+	protected Double m_defaultIncrement = null;
+
+	/**
+	 * Creates a new frequency table.
+	 * @param min_x  The preconfigured minimum value of the generated frequency table
+	 * along the x axis
+	 * @param max_x  The preconfigured maximum value of the generated frequency table
+	 * along the x axis
+	 * @param b_x The number of buckets that will divide the interval
+	 * x<sub>max</sub> - x<sub>min</sub>
+	 * @param min_y  The preconfigured minimum value of the generated frequency table
+	 * along the y axis
+	 * @param max_y  The preconfigured maximum value of the generated frequency table
+	 * along the y axis
+	 * @param b_y The number of buckets that will divide the interval
+	 * y<sub>max</sub> - y<sub>min</sub>
+	 * @param default_increment An optional default value to increment an entry
+	 * when not specified; can be set to <tt>null</tt> (meaning no default increment)
+	 */
+	public FrequencyTable(double min_x, double max_x, int b_x, double min_y, double max_y, int b_y, Double default_increment)
 	{
 		super();
 		m_minX = min_x;
@@ -126,6 +148,7 @@ public class FrequencyTable extends HardTable
 		m_maxY = max_y;
 		m_numBucketsX = b_x;
 		m_numBucketsY = b_y;
+		m_defaultIncrement = default_increment;
 		m_values = new double[b_y][b_x];
 		for (int i = 0; i < b_y; i++)
 		{
@@ -153,7 +176,27 @@ public class FrequencyTable extends HardTable
 			m_columnNames[i + 1] = Double.toString(m_scaleX[i]);
 		}
 	}
-	
+
+	/**
+	 * Creates a new frequency table.
+	 * @param min_x  The preconfigured minimum value of the generated frequency table
+	 * along the x axis
+	 * @param max_x  The preconfigured maximum value of the generated frequency table
+	 * along the x axis
+	 * @param b_x The number of buckets that will divide the interval
+	 * x<sub>max</sub> - x<sub>min</sub>
+	 * @param min_y  The preconfigured minimum value of the generated frequency table
+	 * along the y axis
+	 * @param max_y  The preconfigured maximum value of the generated frequency table
+	 * along the y axis
+	 * @param b_y The number of buckets that will divide the interval
+	 * y<sub>max</sub> - y<sub>min</sub>
+	 */
+	public FrequencyTable(double min_x, double max_x, int b_x, double min_y, double max_y, int b_y)
+	{
+		this(min_x, max_x, b_x, min_y, max_y, b_y, null);
+	}
+
 	/**
 	 * Gets the minimum value on the x axis
 	 * @return The value
@@ -162,7 +205,7 @@ public class FrequencyTable extends HardTable
 	{
 		return m_minX;
 	}
-	
+
 	/**
 	 * Gets the minimum value on the y axis
 	 * @return The value
@@ -171,7 +214,7 @@ public class FrequencyTable extends HardTable
 	{
 		return m_minY;
 	}
-	
+
 	/**
 	 * Gets the maximum value on the x axis
 	 * @return The value
@@ -179,8 +222,8 @@ public class FrequencyTable extends HardTable
 	public double getMaxX()
 	{
 		return m_maxX;
-	}
-	
+	}	
+
 	/**
 	 * Gets the maximum value on the y axis
 	 * @return The value
@@ -189,7 +232,7 @@ public class FrequencyTable extends HardTable
 	{
 		return m_maxY;
 	}
-	
+
 	/**
 	 * Gets the width of each bucket on the x axis
 	 * @return The width
@@ -198,7 +241,7 @@ public class FrequencyTable extends HardTable
 	{
 		return (m_maxX - m_minX) / (double) m_numBucketsX;
 	}
-	
+
 	/**
 	 * Gets the width of each bucket on the y axis
 	 * @return The width
@@ -207,7 +250,7 @@ public class FrequencyTable extends HardTable
 	{
 		return (m_maxY - m_minY) / (double) m_numBucketsY;
 	}
-	
+
 	/**
 	 * Gets the array of values composing the frequency table
 	 * @return The array of values
@@ -216,7 +259,7 @@ public class FrequencyTable extends HardTable
 	{
 		return m_values;
 	}
-	
+
 	/**
 	 * Gets the number of buckets that divide the interval
 	 * x<sub>max</sub> - x<sub>min</sub>
@@ -226,7 +269,7 @@ public class FrequencyTable extends HardTable
 	{
 		return m_numBucketsX;
 	}
-	
+
 	/**
 	 * Gets the number of buckets that divide the interval
 	 * y<sub>max</sub> - y<sub>min</sub>
@@ -236,7 +279,7 @@ public class FrequencyTable extends HardTable
 	{
 		return m_numBucketsY;
 	}
-	
+
 	/**
 	 * Gets the labels of the table's scale on the x axis
 	 * @return The array of labels
@@ -245,7 +288,7 @@ public class FrequencyTable extends HardTable
 	{
 		return m_scaleX;
 	}
-	
+
 	/**
 	 * Gets the labels of the table's scale on the y axis
 	 * @return The array of labels
@@ -254,13 +297,22 @@ public class FrequencyTable extends HardTable
 	{
 		return m_scaleY;
 	}
-	
+
+	@Override
+	public String[] getColumnNames()
+	{
+		if (m_defaultIncrement == null)
+		{
+			return new String[] {CAPTION_X, CAPTION_Y, CAPTION_V};
+		}
+		return new String[] {CAPTION_X, CAPTION_Y};
+	}
+
 	@Override
 	public void add(TableEntry e)
 	{
 		Number x = e.get(CAPTION_X).numberValue();
 		Number y = e.get(CAPTION_Y).numberValue();
-		Number v = e.get(CAPTION_V).numberValue();
 		if (x == null || y == null)
 		{
 			// Invalid tuple: ignore
@@ -269,13 +321,21 @@ public class FrequencyTable extends HardTable
 		double d_x = x.doubleValue();
 		double d_y = y.doubleValue();
 		double d_v = 1;
-		if (v != null)
+		if (m_defaultIncrement != null)
 		{
-			d_v = v.doubleValue();
+			d_v = m_defaultIncrement;
+		}
+		else if (e.containsKey(CAPTION_V))
+		{
+			Number v = e.get(CAPTION_V).numberValue();
+			if (v != null)
+			{
+				d_v = v.doubleValue();
+			}
 		}
 		add(d_x, d_y, d_v);
 	}
-	
+
 	/**
 	 * Adds a value to the frequency table
 	 * @param x The x position
@@ -297,14 +357,17 @@ public class FrequencyTable extends HardTable
 	}
 	
 	/**
-	 * Adds 1 to the frequency table
+	 * Adds 1 or the default increment to the frequency table
 	 * @param x The x position
 	 * @param y The y position
-	 * @param v The value to add in the corresponding cell
 	 * @return This table
 	 */
 	public FrequencyTable add(double x, double y)
 	{
+		if (m_defaultIncrement != null)
+		{
+			return add(x, y, m_defaultIncrement);
+		}
 		return add(x, y, 1);
 	}
 
@@ -338,7 +401,7 @@ public class FrequencyTable extends HardTable
 		// No dependency given
 		return null;
 	}
-	
+
 	@Override
 	public void clear()
 	{
@@ -348,6 +411,35 @@ public class FrequencyTable extends HardTable
 			for (int j = 0; j < m_numBucketsX; j++)
 			{
 				m_values[i][j] = 0;
+			}
+		}
+	}
+	
+	@Override
+	public FrequencyTable duplicate(boolean with_state)
+	{
+		FrequencyTable ft = new FrequencyTable(m_minX, m_maxX, m_numBucketsX, m_minY, m_maxY, m_numBucketsY, m_defaultIncrement);
+		copyInto(ft, with_state);
+		return ft;
+	}
+	
+	@Override
+	protected void copyInto(Table t, boolean with_state)
+	{
+		super.copyInto(t, with_state);
+		if (!(t instanceof FrequencyTable))
+		{
+			return;
+		}
+		FrequencyTable ft = (FrequencyTable) t;
+		if (with_state)
+		{
+			for (int i = 0; i < m_numBucketsY; i++)
+			{
+				for (int j = 0; j < m_numBucketsX; j++)
+				{
+					ft.m_values[i][j] = m_values[i][j];
+				}
 			}
 		}
 	}

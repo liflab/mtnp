@@ -41,7 +41,7 @@ public class HeatMap extends GnuPlot implements TwoDimensionalPlot
 	/**
 	 * Creates a new heat map associated to no table
 	 */
-	protected HeatMap()
+	public HeatMap()
 	{
 		super();
 	}
