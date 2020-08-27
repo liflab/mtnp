@@ -268,7 +268,7 @@ public class FrequencyTable extends HardTable
 		}
 		double d_x = x.doubleValue();
 		double d_y = y.doubleValue();
-		double d_v = 0;
+		double d_v = 1;
 		if (v != null)
 		{
 			d_v = v.doubleValue();
